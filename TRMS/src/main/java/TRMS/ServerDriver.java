@@ -31,8 +31,6 @@ public class ServerDriver {
 			app.post(FORM_PATH, ctx -> formController.createForm(ctx));
 			app.get(FORM_PATH + "/pending", ctx -> formController.readPendingForms(ctx));
 			app.get(FORM_PATH + "/assigned", ctx -> formController.readAssignedForms(ctx));
-			//fetch users submitted forms
-			//fetch forms to approve by user
 			app.put(FORM_PATH, ctx -> formController.updateForm(ctx));
 		});
 		

@@ -42,20 +42,17 @@ label {
 
 .table_style_row {
   height: auto;
-  padding: 20px 30px;
   background-color: white;
   border-radius: 10px;
-  box-shadow: 0 0 10px 0 black;
   margin-top: 40px;
 }
 
 .table_style_col {
   height: auto;
-  padding: 20px 30px;
+  padding: 10px 5px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 10px 0 black;
-  margin-top: 40px;
 }
 
 .login_form{
@@ -120,7 +117,7 @@ a.menu_option:hover{
 .form_element{  
   width: 100%;
   padding: 12px 20px;
-  margin: 8px;
+  margin: 8px auto;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
@@ -132,6 +129,8 @@ button {
   padding: 14px 20px;
   margin: 8px 0;
   border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 5px 0 black;
   cursor: pointer;
   width: 100%;
 }

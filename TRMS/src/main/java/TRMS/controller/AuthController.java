@@ -35,7 +35,6 @@ public class AuthController {
 			ctx.cookieStore("is_ben_co", currentUser.getIs_ben_co());
 			ctx.cookieStore("security", auth.createToken(username));
 			
-			System.out.println("ctx.toString: " + ctx.toString());
 			System.out.println("ctx.cookieStore(\"is_supervisor\"): " + (boolean)ctx.cookieStore("is_supervisor"));
 
 			
@@ -55,5 +54,4 @@ public class AuthController {
 			ctx.html("Invalid Session Cookie. Please Log in first");
 		}
 	}
-
 }

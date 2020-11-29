@@ -113,6 +113,7 @@ public class FormServiceFullStack implements FormService {
 			}
 		}
 		
+		log.info("FormServiceFullStack.readPendingForms[Vetted forms: " + vettedForms.toString() + "]");
 		// return forms
 		return vettedForms;
 	}
@@ -128,11 +129,16 @@ public class FormServiceFullStack implements FormService {
 		// get user based on id to determine status
 		Employee currentUser = employeeService.readEmployeeByUsername(username);
 		
+		System.out.println("In readAssignedFroms: pulled in currentUser: " + currentUser.toString());
+		
 		// Determine the employee status
 		if(currentUser.getIs_ben_co()) {
 			//check list for forms that have all approval but ben_co
+			System.out.println("User was a Ben_Co");
 			for(Form f : forms) {
+				System.out.println("Checking: " + f.toString());
 				if(f.isSupervisorApproved() == true && f.isDepHeadApproved() == true && f.isBenCoApproved() == false) {
+					System.out.println("Added!");
 					vettedForms.add(f);
 				}
 			}
@@ -140,16 +146,22 @@ public class FormServiceFullStack implements FormService {
 		}
 		else if(currentUser.getIs_dep_head()) {
 			//check list of forms that have all approval except ben_co and supervisor
+			System.out.println("User was a Dep Head");
 			for(Form f : forms) {
+				System.out.println("Checking: " + f.toString());
 				if(f.isSupervisorApproved() == true && f.isDepHeadApproved() == false && f.isBenCoApproved() == false) {
+					System.out.println("Added!");
 					vettedForms.add(f);
 				}
 			}
 		}
 		else if(currentUser.getIs_supervisor()) {
 			//check list of forms that do not have supervisor approval
+			System.out.println("User was a Supervisor");
 			for(Form f : forms) {
+				System.out.println("Checking: " + f.toString());
 				if(f.isSupervisorApproved() == false && f.isDepHeadApproved() == false && f.isBenCoApproved() == false) {
+					System.out.println("Added!");
 					vettedForms.add(f);
 				}
 			}
