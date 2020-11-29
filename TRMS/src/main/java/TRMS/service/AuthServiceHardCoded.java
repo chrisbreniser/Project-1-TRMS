@@ -4,21 +4,44 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
+import TRMS.dao.EmployeeDao;
+import TRMS.dao.EmployeeDaoPostgres;
+import TRMS.model.Employee;
+
 public class AuthServiceHardCoded implements AuthService {
+	
+	private static Logger log = Logger.getRootLogger();
 	
 	private static byte[] salt = new SecureRandom().getSeed(16);
 
 	private Map<String, String> tokenRepo = new HashMap<>();
 	
+	private EmployeeDao employeeDao = new EmployeeDaoPostgres();
+	
 	@Override
-	public boolean authenticateUser(String username, String password) {
+	public boolean authenticateUser(Employee currentUser, String username, String password) {
 		
-		if ("admin".equals(username) && "1234".equals(password)) {
-			return true;
+		// get all employees, and check if user and pass match any of them
+		log.info("AuthSurviceHardCoded.authenticateUser[Checking if " + username + " and " + password + " is valid. Calling employeeDao for list of employees]");
+		
+		List<Employee> employees = employeeDao.selectAllEmployees();
+		
+		log.info("AuthSurviceHardCoded.authenticateUser[Got list of employees from Dao: " + employees.toString() + "]");
+		
+		for(Employee e : employees) {
+			if(e.getUser_name().equals(username) && e.getPass_word().equals(password)) {
+				log.info("AuthSurviceHardCoded.authenticateUser[Login successful for user: " + username + "]");
+				currentUser = e;
+				log.info("AuthSurviceHardCoded.authenticateUser[Created currentUser: " + currentUser + "]");
+				return true;
+			}
 		}
-		
+		log.info("AuthSurviceHardCoded.authenticateUser[Login unsuccessful for user: " + username + "]");
 		return false;
 	}
 

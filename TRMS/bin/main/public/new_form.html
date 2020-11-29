@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>New TR Form</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <div class="title_banner">
+        <h1>Submit New Form</h1>
+    </div>
+    <form id="reimbursementForm", method="POST", action="https://localhost:9090/form" enctype="multipart/form-data"> 
+        <p class="section_header">Event Information:</p>
+
+        <label for="event_type"><strong>Choose an Event Type:</strong></label>
+        <select class="form_element" name="event_type">
+            <option value="univercity_course">Univercity Course</option>
+            <option value="seminar">Seminar</option>
+            <option value="certification_preparation_class">Certification Preparation Class</option>
+            <option value="certification">Certification</option>
+            <option value="technical_training">Technical Training</option>
+            <option value="other">Other</option>
+        </select>
+
+        <label for="event_date"><strong>Event Date:</strong></label>
+        <input class="form_element" type="date" name="event_date" placeholder="Event Date" required>
+
+        <label for="event_time"><strong>Event Time:</strong></label>
+        <input class="form_element" type="time" name="event_time" placeholder="Event Time" required>
+
+        <label for="event_location"><strong>Event Location:</strong></label>
+        <input class="form_element" type="text" name="event_location" placeholder="Event Location" required>
+
+        <label for="event_description"><strong>Event Description:</strong></label>
+        <textarea class="form_element" name="event_description" placeholder="Event Description" required></textarea>
+
+        <label for="grading_format"><strong>Grading Format:</strong></label>
+        <select class="form_element" name="grading_format">
+            <option value="certification_test">Certification Test</option>
+            <option value="presentation">Presentation</option>
+            <option value="report">Report</option>
+            <option value="other">Other</option>
+        </select>
+
+        <label for="event_cost"><strong>Event Charge:</strong></label>
+        <input class="form_element" type="text" name="event_cost" placeholder="Cost">
+
+        <p class="section_header">Short Answer:</p>
+
+        <label for="justification"><strong>Reimbursement Justification:</strong></label>
+        <textarea class="form_element" name="justification" placeholder="This would help because..." required></textarea>
+
+        <p class="section_header">Optional Additions:</p>
+
+        <label for="event_attach"><strong>Please attach any event related document:</strong></label>
+        <input class="form_element" type="file" name="event_attach">
+
+        <label for="pre_approval_attach"><strong>Pre-Approval Attachemt:</strong></label>
+        <input class="form_element" type="file" name="pre_approval_attach">
+
+        <label for="hours_time_missed"><strong>Projected Hours of Work Missed:</strong></label>
+        <input class="form_element" type="text" name="hours_time_missed" placeholder="Something">
+
+        <button type="submit">Submit</button>
+        
+    </form>
+    
+</body>
+<footer>
+    
+</footer>
+</html>
