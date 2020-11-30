@@ -21,8 +21,6 @@ public interface FormService {
 		
 	public boolean updateForm(int formId, Form form);
 	
-	public boolean deleteForm();
-	
 	public boolean approveFormSupervisor();
 	
 	public boolean approveFormDepHead();
