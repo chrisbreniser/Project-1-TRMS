@@ -6,13 +6,11 @@ drop table if exists department;
 drop table if exists event_type;
 drop type if exists event_type_enum;
 
-
-
 create table department
 (
 	dep_id serial not null,
 	dep_name varchar(50),
-	dep_head_id int,
+	constraint PK_dep_id primary key (dep_id)
 );
 
 create table employee
@@ -59,7 +57,7 @@ create table reimbursement_form
 	hours_missed decimal,
 	reimbursment_amount decimal,
 	status varchar(255),
-	supervisor_id int;
+	supervisor_id int,
 	supervisor_approval bool,
 	dep_head_approval bool,
 	ben_co_approval bool,
@@ -67,7 +65,7 @@ create table reimbursement_form
 	rej_reason varchar(1000),
 	constraint PK_form_id primary key (form_id),
 	constraint FK_employee_id foreign key (employee_id) references employee (employee_id) on delete cascade on update cascade,
-	constraint FK_supervisor_id foreign key (supervisor_id) references employee (employee_id) on delete cascade on update cascade,
+	constraint FK_supervisor_id foreign key (supervisor_id) references employee (employee_id) on delete cascade on update cascade
 );
 
 insert into department (dep_name)
@@ -94,8 +92,8 @@ dep_head_approval, ben_co_approval, rejected, rej_reason)
 values 
 (2, 'seminar', '2020-12-01', '13:00:00', '123 something st. Corvallis, Oregon, 97330', 'A seminar to teach about a new production tool.',
 null, 100, 'This seminar will help me understand advanced product production using this great new tool!', 'report', null, null, 
-'8', 60, 'pending', true, 
-true, false, false, 2, null),
+'8', 60, 'pending', 2, true, 
+true, false, false, null),
 (4, 'seminar', '2020-12-01', '13:00:00', '123 something st. Corvallis, Oregon, 97330', 'A seminar to teach about a new production tool.',
 null, 100, 'This seminar will help me understand advanced product production using this great new tool!', 'report', null, null, 
 '8', 60, 'pending', 3, false, 
