@@ -21,10 +21,11 @@ public interface FormService {
 		
 	public boolean updateForm(int formId, Form form);
 	
-	public boolean approveFormSupervisor();
+	public boolean approveFormSupervisor(int formId);
 	
-	public boolean approveFormDepHead();
+	public boolean approveFormDepHead(int formId);
 	
-	public boolean approveFormBenCo();
+	public boolean approveFormBenCo(int formId);
+
 	
 }

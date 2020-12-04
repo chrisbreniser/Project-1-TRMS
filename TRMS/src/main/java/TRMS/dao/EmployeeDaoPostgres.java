@@ -78,9 +78,29 @@ public class EmployeeDaoPostgres implements EmployeeDao {
 	}
 
 	@Override
-	public boolean updateEmployee(Employee e, int id) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateEmployee(Employee employee, int id) {
+		log.info("EmployeeDao.selectAllEmployees[Received request, creating 'select *' statement]");
+		
+		List<Employee> employees = new ArrayList<Employee>();
+		
+		boolean updated = false;
+		
+		String sql = "update employees from set where id = ?";
+		
+		try(Connection conn = connUtil.createConnection()){
+			
+			
+			log.info("EmployeeDaoPostgres.updateEmployeefunds[Result of query as a list of employees: " 
+					+ employees.toString() + "]");
+			updated = true;
+			
+		} catch (Exception e1) {
+			log.info("EmployeeDaoPostgres.selectEmployeeFunds[In catch block, SQLException: " 
+					+ e1.getMessage() 
+					+ "]");
+		}
+		
+		return updated;
 	}
 
 	@Override

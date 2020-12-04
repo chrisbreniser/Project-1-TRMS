@@ -28,18 +28,20 @@ public class FormServiceFullStack implements FormService {
 	public void createFrom(Form form) {
 		log.info("FormServiceFullStack.createForm[Received " + form.toString() + " in Service. Setting reimbursment ammount based on event_type Calling Dao]");
 		
-		Employee currentUser = employeeService.readEmployeeById(form.getEmployeeId());
+		Employee formUser = employeeService.readEmployeeById(form.getEmployeeId());
 		// setup approvals based on user status
-		if(currentUser.getIs_dep_head()) {
+		if(formUser.getIs_dep_head()) {
+			System.out.println("Setting form up: User was dep head: setting two approvals to true");
 			form.setSupervisorApproved(true);
 			form.setDepHeadApproved(true);
-		} else if(currentUser.getIs_supervisor()) {
+		} else if(formUser.getIs_supervisor()) {
+			System.out.println("Setting form up: User was supervisor: setting one approval to true");
 			form.setSupervisorApproved(true);
 		}
 		
 		// set reimbursement amount based on type
 		switch(form.getEventType()) {
-		case "univercity_course":
+		case "university_course":
 			form.setReimbursmentAmount(form.getEventCost() * .8);
 			break;
 			
@@ -131,7 +133,7 @@ public class FormServiceFullStack implements FormService {
 			System.out.println("User was a Ben_Co");
 			for(Form f : forms) {
 				System.out.println("Checking: " + f.toString());
-				if(f.isSupervisorApproved() == true && f.isDepHeadApproved() == true && f.isBenCoApproved() == false) {
+				if(f.isSupervisorApproved() == true && f.isDepHeadApproved() == true && f.isBenCoApproved() == false && f.getEmployeeId() != currentUser.getEmployee_id()) {
 					System.out.println("Added!");
 					vettedForms.add(f);
 				}
@@ -143,7 +145,8 @@ public class FormServiceFullStack implements FormService {
 			System.out.println("User was a Dep Head");
 			for(Form f : forms) {
 				System.out.println("Checking: " + f.toString());
-				if(f.isSupervisorApproved() == true && f.isDepHeadApproved() == false && f.isBenCoApproved() == false) {
+				Employee formUser = employeeService.readEmployeeById(f.getEmployeeId());
+				if(formUser.getDep() == currentUser.getDep() && f.isSupervisorApproved() == true && f.isDepHeadApproved() == false && f.isBenCoApproved() == false) {
 					System.out.println("Added!");
 					vettedForms.add(f);
 				}
@@ -154,31 +157,30 @@ public class FormServiceFullStack implements FormService {
 			System.out.println("User was a Supervisor");
 			for(Form f : forms) {
 				System.out.println("Checking: " + f.toString());
-				if(f.isSupervisorApproved() == false && f.isDepHeadApproved() == false && f.isBenCoApproved() == false) {
+				Employee formUser = employeeService.readEmployeeById(f.getEmployeeId());
+				if(formUser.getDep() == currentUser.getDep() && f.isSupervisorApproved() == false && f.isDepHeadApproved() == false && f.isBenCoApproved() == false) {
 					System.out.println("Added!");
 					vettedForms.add(f);
 				}
 			}
 		}
-		
-		
 		return vettedForms;
 	}
 
 	@Override
-	public boolean approveFormSupervisor() {
+	public boolean approveFormSupervisor(int formId) {
+		
+		return true;
+	}
+
+	@Override
+	public boolean approveFormDepHead(int formId) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean approveFormDepHead() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean approveFormBenCo() {
+	public boolean approveFormBenCo(int formId) {
 		// TODO Auto-generated method stub
 		return false;
 	}

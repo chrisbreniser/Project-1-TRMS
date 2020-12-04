@@ -26,13 +26,15 @@ create table employee
 	is_ben_co bool,
 	is_dep_head bool,
 	is_supervisor bool,
+	pending_funds double default 0,
+	approved_funds double default 0 ,
 	constraint PK_employee_id primary key (employee_id),
 	constraint FK_dep_id foreign key (dep_id) references department (dep_id) on delete cascade on update cascade
 );
 
 create type event_type_enum as enum 
 (
-'univercity_course',
+'university_course',
 'seminar',
 'certification_preparation_class', 
 'certification', 

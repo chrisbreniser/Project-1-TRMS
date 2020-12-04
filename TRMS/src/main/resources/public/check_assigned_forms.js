@@ -8,10 +8,6 @@ window.onload = function () {
     xhr.onreadystatechange = function () {
         console.log(xhr.readyState);
         switch (xhr.readyState) {
-
-            case 0:
-                console.log("nothing, initalized not sent");
-                break;
             case 1:
                 console.log("connection established");
                 break;
@@ -25,6 +21,7 @@ window.onload = function () {
                 console.log("FINISHED!!!!!!!!!!!");
                 //logic to add form to table
                 console.log(xhr.status);
+                console.log(xhr.responseText);
                 if (xhr.status === 200) {
                     console.log("xhr.responceText: " + xhr.responseText);
                     let formList = JSON.parse(xhr.responseText);
@@ -96,7 +93,9 @@ let addRow = function (myForm) {
     justificationCol.className = "table_style_col";
     gradingCol.className = "table_style_col";
     hoursMissedCol.className = "table_style_col";
-    approveButtonCol.className = "table_style_col";
-    rejectButtonCol.className = "table_style_col";
-    requestButtonCol.className = "table_style_col";
+
+    approveButtonCol.setAttribute("id", myForm.employeeId);
+    approveButtonCol.onclick = function() {
+        //doc.cookie make ajax call or something
+    }
 }

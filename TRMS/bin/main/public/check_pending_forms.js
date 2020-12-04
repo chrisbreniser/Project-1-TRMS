@@ -46,9 +46,29 @@ window.onload = function () {
 
 }
 
+let updateFunds = function (reimbursmentAmount, status) {
+    let available = document.getElementById("available-funds");
+    let pending = document.getElementById("pending-funds");
+    let awarded = document.getElementById("awarded-funds");
+
+    let placeHolder;
+
+    if(status === "pending"){
+        placeHolder = parseInt(pending.innerHTML);
+        pending.innerHTML = placeHolder + reimbursmentAmount;
+        available.innerHTML -= reimbursmentAmount;
+    } else if(status === "approved"){
+        placeHolder = parseInt(awarded.innerHTML);
+        awarded.innerHTML = placeHolder + reimbursmentAmount;
+        available.innerHTML -= reimbursmentAmount;
+    }
+}
+
 let addRow = function (myForm) {
-    let table = document.getElementById("form-table");
+    updateFunds(myForm.reimbursmentAmount, myForm.status);
+    let tableBody = document.getElementById("pending-table-body");
     let tableRow = document.createElement("tr");
+    let formCol = document.createElement("td");
     let employeeCol = document.createElement("td");
     let typeCol = document.createElement("td");
     let dateCol = document.createElement("td");
@@ -62,10 +82,11 @@ let addRow = function (myForm) {
     let supervisalApprovalCol = document.createElement("td");
     let depHeadApprovalCol = document.createElement("td");
     let benCoApprovalCol = document.createElement("td");
+    let statusCol = document.createElement("td");
     // let rejectionStatusCol = document.createElement("td");
     // let rejectionReasonCol = document.createElement("td");
 
-
+    tableRow.appendChild(formCol);
     tableRow.appendChild(employeeCol);
     tableRow.appendChild(typeCol);
     tableRow.appendChild(dateCol);
@@ -79,10 +100,12 @@ let addRow = function (myForm) {
     tableRow.appendChild(supervisalApprovalCol);
     tableRow.appendChild(depHeadApprovalCol);
     tableRow.appendChild(benCoApprovalCol);
+    tableRow.appendChild(statusCol);
     // tableRow.appendChild(rejectionStatusCol);
     // tableRow.appendChild(rejectionReasonCol);
-    table.appendChild(tableRow);
+    tableBody.appendChild(tableRow);
 
+    formCol.innerHTML = myForm.formId;
     employeeCol.innerHTML = myForm.employeeId;
     typeCol.innerHTML = myForm.eventType;
     dateCol.innerHTML = myForm.eventDate;
@@ -96,22 +119,23 @@ let addRow = function (myForm) {
     supervisalApprovalCol.innerHTML = myForm.supervisorApproved;
     depHeadApprovalCol.innerHTML = myForm.depHeadApproved;
     benCoApprovalCol.innerHTML = myForm.benCoApproved;
+    statusCol.innerHTML = myForm.status;
     // rejectionStatusCol.innerHTML = myForm.rejected;
     // rejectionReasonCol.innerHTML = myForm.rejReason;
 
-    employeeCol.className = "table_style_col";
-    typeCol.className = "table_style_col";
-    dateCol.className = "table_style_col";
-    locationCol.className = "table_style_col";
-    descriptionCol.className = "table_style_col";
-    reimbursmentCol.className = "table_style_col";
-    justificationCol.className = "table_style_col";
-    gradingCol.className = "table_style_col";
-    gradeCol.className = "table_style_col";
-    hoursMissedCol.className = "table_style_col";
-    supervisalApprovalCol.className = "table_style_col";
-    depHeadApprovalCol.className = "table_style_col";
-    benCoApprovalCol.className = "table_style_col";
+    // employeeCol.className = "table_style_col";
+    // typeCol.className = "table_style_col";
+    // dateCol.className = "table_style_col";
+    // locationCol.className = "table_style_col";
+    // descriptionCol.className = "table_style_col";
+    // reimbursmentCol.className = "table_style_col";
+    // justificationCol.className = "table_style_col";
+    // gradingCol.className = "table_style_col";
+    // gradeCol.className = "table_style_col";
+    // hoursMissedCol.className = "table_style_col";
+    // supervisalApprovalCol.className = "table_style_col";
+    // depHeadApprovalCol.className = "table_style_col";
+    // benCoApprovalCol.className = "table_style_col";
     // rejectionStatusCol.className = "table_style_col";
     // rejectionReasonCol.className = "table_style_col";
 }

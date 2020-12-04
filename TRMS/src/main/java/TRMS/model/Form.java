@@ -96,7 +96,7 @@ public class Form {
 		this.preApprovalAttach = preApprovalAttach;
 		this.hoursMissed = hoursMissed;
 		this.reimbursmentAmount = 0;
-		this.status = "Pending";
+		this.status = "pending";
 		this.supervisorApproved = false;
 		this.depHeadApproved = false;
 		this.benCoApproved = false;

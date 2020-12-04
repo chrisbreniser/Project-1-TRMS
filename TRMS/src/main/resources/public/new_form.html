@@ -5,70 +5,116 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>New TR Form</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
     <link rel="shortcut icon" href="#" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src='main.js'></script>
 </head>
 <body>
-    <div class="title_banner">
-        <h1>Submit New Form</h1>
+
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">TRMS</a>
+        <span class="navbar-text">
+            <h3>Create New Form</h3>
+          </span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="main_menu.html">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="login.html">Logout <span class="sr-only">(current)</span></a>
+              </li>
+        </div>
+    </nav>
+
+    <div class="container">
+        <form id="reimbursementForm" method="POST" action="/form" enctype="multipart/form-data"> 
+
+            <div class="form-group">
+                <label for="event_type"><strong>Choose an Event Type:</strong></label>
+                <select class="form-control" name="event_type">
+                    <option value="university_course">University Course</option>
+                    <option value="seminar">Seminar</option>
+                    <option value="certification_preparation_class">Certification Preparation Class</option>
+                    <option value="certification">Certification</option>
+                    <option value="technical_training">Technical Training</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="event_date"><strong>Event Date:</strong></label>
+                <input class="form-control" type="date" name="event_date" placeholder="Event Date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="event_time"><strong>Event Time:</strong></label>
+                <input class="form-control" type="time" name="event_time" placeholder="Event Time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="event_location"><strong>Event Location:</strong></label>
+                <input class="form-control" type="text" name="event_location" placeholder="Event Location" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="event_description"><strong>Event Description:</strong></label>
+                <textarea class="form-control" name="event_description" placeholder="Event Description" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="grading_format"><strong>Grading Format:</strong></label>
+                <select class="form-control" name="grading_format">
+                    <option value="certification_test">Certification Test</option>
+                    <option value="presentation">Presentation</option>
+                    <option value="report">Report</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="event_cost"><strong>Event Charge:</strong></label>
+                <input class="form-control" type="text" name="event_cost" placeholder="Cost">
+            </div>
+            
+            <p class="section_header">Short Answer:</p>
+
+            <div class="form-group">
+                <label for="justification"><strong>Reimbursement Justification:</strong></label>
+                <textarea class="form-control" name="justification" placeholder="This would help because..." required></textarea>
+            </div>
+
+            <p class="section_header">Optional Additions:</p>
+
+            <div class="form-group">
+                <label for="event_attach"><strong>Please attach any event related document:</strong></label>
+                <input class="form-control" type="file" name="event_attach">
+            </div>
+
+            <div class="form-group">
+                <label for="pre_app_attach"><strong>Pre-Approval Attachment:</strong></label>
+                <input class="form-control" type="file" name="pre_app_attach">
+            </div>
+
+            <div class="form-group">
+                <label for="hours_time_missed"><strong>Projected Hours of Work Missed:</strong></label>
+                <input class="form-control" type="text" name="hours_time_missed" placeholder="In Hours">
+            </div>
+
+            <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            
+        </form>
     </div>
-    <form id="reimbursementForm", method="POST", action="https://localhost:9090/form" enctype="multipart/form-data"> 
-        <p class="section_header">Event Information:</p>
-
-        <label for="event_type"><strong>Choose an Event Type:</strong></label>
-        <select class="form_element" name="event_type">
-            <option value="univercity_course">Univercity Course</option>
-            <option value="seminar">Seminar</option>
-            <option value="certification_preparation_class">Certification Preparation Class</option>
-            <option value="certification">Certification</option>
-            <option value="technical_training">Technical Training</option>
-            <option value="other">Other</option>
-        </select>
-
-        <label for="event_date"><strong>Event Date:</strong></label>
-        <input class="form_element" type="date" name="event_date" placeholder="Event Date" required>
-
-        <label for="event_time"><strong>Event Time:</strong></label>
-        <input class="form_element" type="time" name="event_time" placeholder="Event Time" required>
-
-        <label for="event_location"><strong>Event Location:</strong></label>
-        <input class="form_element" type="text" name="event_location" placeholder="Event Location" required>
-
-        <label for="event_description"><strong>Event Description:</strong></label>
-        <textarea class="form_element" name="event_description" placeholder="Event Description" required></textarea>
-
-        <label for="grading_format"><strong>Grading Format:</strong></label>
-        <select class="form_element" name="grading_format">
-            <option value="certification_test">Certification Test</option>
-            <option value="presentation">Presentation</option>
-            <option value="report">Report</option>
-            <option value="other">Other</option>
-        </select>
-
-        <label for="event_cost"><strong>Event Charge:</strong></label>
-        <input class="form_element" type="text" name="event_cost" placeholder="Cost">
-
-        <p class="section_header">Short Answer:</p>
-
-        <label for="justification"><strong>Reimbursement Justification:</strong></label>
-        <textarea class="form_element" name="justification" placeholder="This would help because..." required></textarea>
-
-        <p class="section_header">Optional Additions:</p>
-
-        <label for="event_attach"><strong>Please attach any event related document:</strong></label>
-        <input class="form_element" type="file" name="event_attach">
-
-        <label for="pre_app_attach"><strong>Pre-Approval Attachemt:</strong></label>
-        <input class="form_element" type="file" name="pre_app_attach">
-
-        <label for="hours_time_missed"><strong>Projected Hours of Work Missed:</strong></label>
-        <input class="form_element" type="text" name="hours_time_missed" placeholder="In Hours">
-
-        <button type="submit">Submit</button>
-        
-    </form>
-    
+       
 </body>
 <footer>
     

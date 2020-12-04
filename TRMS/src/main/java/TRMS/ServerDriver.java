@@ -32,6 +32,10 @@ public class ServerDriver {
 			app.get(FORM_PATH + "/pending", ctx -> formController.readPendingForms(ctx));
 			app.get(FORM_PATH + "/assigned", ctx -> formController.readAssignedForms(ctx));
 			app.put(FORM_PATH, ctx -> formController.updateForm(ctx));
+			//endpoints for each user level
+			app.post(FORM_PATH + "/assigned/approve", ctx -> formController.approveForm(ctx));
+			app.post(FORM_PATH + "/assigned/reject", ctx -> formController.rejectForm(ctx));
+			
 		});
 		
 	}

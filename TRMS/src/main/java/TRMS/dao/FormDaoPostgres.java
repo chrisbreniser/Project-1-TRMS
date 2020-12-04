@@ -25,6 +25,13 @@ public class FormDaoPostgres implements FormDao {
 	
 	private ConnectionUtil connUtil = new ConnectionUtil();
 	
+	public FormDaoPostgres() {
+	}
+	
+	public FormDaoPostgres(ConnectionUtil connUtil) {
+		this.connUtil = connUtil;
+	}
+	
 	@Override
 	public void setConnUtil(ConnectionUtil connUtil) {
 		this.connUtil = connUtil;
@@ -37,10 +44,10 @@ public class FormDaoPostgres implements FormDao {
 		// changed position 7 and 10 to null in order to figure
 		String sql = "insert into reimbursement_form "
 				+ "(employee_id, event_type, event_date, event_time, event_location, event_description, "
-				+ "event_attach, justification, grading_format, grade, pre_approval_attach, "
+				+ "event_attach, event_cost, justification, grading_format, grade, pre_approval_attach, "
 				+ "hours_missed, reimbursment_amount, status, supervisor_approval, "
 				+ "dep_head_approval, ben_co_approval, rejected, rej_reason) "
-				+ "values (?, ?::event_type_enum, ?::date, ?::time, ?, ?, ?, ?, ?, null, ?, ?, ?, ?, false, false, false, false, null);";
+				+ "values (?, ?::event_type_enum, ?::date, ?::time, ?, ?, ?, ?, ?, ?, null, ?, ?, ?, ?, ?, ?, false, false, null);";
 		
 		try(Connection conn = connUtil.createConnection()){
 			conn.setAutoCommit(false);
@@ -54,15 +61,16 @@ public class FormDaoPostgres implements FormDao {
 			preparedStatement.setString(4, form.getEventTime());
 			preparedStatement.setString(5, form.getEventLocation());
 			preparedStatement.setString(6, form.getEventDescription());
-//			preparedStatement.setBlob(7, new SerialBlob(form.getEventAttach()));
-			preparedStatement.setObject(7, null);
-			preparedStatement.setString(8, form.getJustification());
-			preparedStatement.setString(9, form.getGradingFormat());
-//			preparedStatement.setBlob(10, new SerialBlob(form.getPreApprovalAttach()));
-			preparedStatement.setObject(10, null);
-			preparedStatement.setDouble(11, form.getHoursMissed());
-			preparedStatement.setDouble(12, form.getReimbursmentAmount());
-			preparedStatement.setString(13, form.getStatus());
+			preparedStatement.setBytes(7, form.getEventAttach());
+			preparedStatement.setObject(8, form.getEventCost());
+			preparedStatement.setString(9, form.getJustification());
+			preparedStatement.setString(10, form.getGradingFormat());
+			preparedStatement.setBytes(11, form.getPreApprovalAttach());
+			preparedStatement.setDouble(12, form.getHoursMissed());
+			preparedStatement.setDouble(13, form.getReimbursmentAmount());
+			preparedStatement.setString(14, form.getStatus());
+			preparedStatement.setBoolean(15, form.isSupervisorApproved());
+			preparedStatement.setBoolean(16, form.isDepHeadApproved());
 			
 			log.info("FormDaoPostgres.insertForm[In try block: Attempting to execute:" + preparedStatement + "]");
 			
@@ -105,7 +113,8 @@ public class FormDaoPostgres implements FormDao {
 			ResultSet rs = preparedStatement.executeQuery();
 			
 			while(rs.next()) {
-				forms.add(new Form(rs.getInt("employee_id"),
+				forms.add(new Form(
+						rs.getInt("form_id"),
 						rs.getInt("employee_id"),
 						rs.getString("event_type"),
 						rs.getString("event_date"),
@@ -113,11 +122,11 @@ public class FormDaoPostgres implements FormDao {
 						rs.getString("event_location"),
 						rs.getString("event_description"),
 						rs.getDouble("event_cost"),
-						/*rs.getBlob("event_attach")*/null,
+						rs.getBytes("event_attach"),
 						rs.getString("justification"),
 						rs.getString("grading_format"),
 						rs.getString("grade"),
-						/*rs.getBlob("pre_approval_attach")*/null,
+						rs.getBytes("pre_approval_attach"),
 						rs.getDouble("hours_missed"),
 						rs.getDouble("reimbursment_amount"),
 						rs.getString("status"),
@@ -147,9 +156,11 @@ public class FormDaoPostgres implements FormDao {
 				+ formId + " and form:" + form.toString() 
 				+ ", parsing data for update]");
 		
+		boolean updated = false;
+		
 		String sql = "update reimbursement_form set "
-				+ "employee_id=?, event_type=?, event_date=?, event_time=?, event_location=?, event_description=?, "
-				+ "event_attach=?, justification=?, grading_format=?, grade=?, pre_approval_attach=?, "
+				+ "employee_id=?, event_type=?::event_type_enum, event_date=?::date, event_time=?::time, event_location=?, event_description=?, "
+				+ "event_attach=?, event_cost=? justification=?, grading_format=?, grade=?, pre_approval_attach=?, "
 				+ "hours_time_missed=?, reimbursment_amount=?, status=?, supervisor_approval=?, "
 				+ "dep_head_approval=?, ben_co_approval=?, rejected=?, rej_reason=?) "
 				+ "where form_id = ?;";
@@ -167,21 +178,22 @@ public class FormDaoPostgres implements FormDao {
 			preparedStatement.setString(4, form.getEventTime());
 			preparedStatement.setString(5, form.getEventLocation());
 			preparedStatement.setString(6, form.getEventDescription());
-//		preparedStatement.setBlob(7, form.getEventAttach().getContent());
-			preparedStatement.setObject(7, null);
-			preparedStatement.setString(8, form.getJustification());
-			preparedStatement.setString(9, form.getGradingFormat());
-//		preparedStatement.setBlob(10, form.getPreApprovalAttach().getContent());
-			preparedStatement.setObject(10, null);
-			preparedStatement.setDouble(11, form.getHoursMissed());
-			preparedStatement.setDouble(12, form.getReimbursmentAmount());
-			preparedStatement.setString(13, form.getStatus());
+			preparedStatement.setBytes(7, form.getEventAttach());
+			preparedStatement.setObject(8, form.getEventCost());
+			preparedStatement.setString(9, form.getJustification());
+			preparedStatement.setString(10, form.getGradingFormat());
+			preparedStatement.setBytes(11, form.getPreApprovalAttach());
+			preparedStatement.setDouble(12, form.getHoursMissed());
+			preparedStatement.setDouble(13, form.getReimbursmentAmount());
+			preparedStatement.setString(14, form.getStatus());
+			
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return false;
+		return true;
 	}
 	
 	
