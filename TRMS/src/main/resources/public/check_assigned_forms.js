@@ -1,5 +1,6 @@
 
 window.onload = function () {
+    console.log("debugCookie: " + document.cookie);
     //AJAX - Asynchronous JavaScript and XML
     //Initialize xhr object
     let xhr = new XMLHttpRequest();
@@ -44,58 +45,84 @@ window.onload = function () {
 }
 
 let addRow = function (myForm) {
-    let table = document.getElementById("form-table");
+    let tableBody = document.getElementById("assigned-table-body");
     let tableRow = document.createElement("tr");
+    let formCol = document.createElement("td");
     let employeeCol = document.createElement("td");
     let typeCol = document.createElement("td");
+    let dateCol = document.createElement("td");
+    let locationCol = document.createElement("td");
     let descriptionCol = document.createElement("td");
     let reimbursmentCol = document.createElement("td");
     let justificationCol = document.createElement("td");
     let gradingCol = document.createElement("td");
+    let gradeCol = document.createElement("td");
+    let eventAttach = document.createElement("td");
+    let eventAttachImg = document.createElement("img")
     let hoursMissedCol = document.createElement("td");
+    let supervisalApprovalCol = document.createElement("td");
+    let depHeadApprovalCol = document.createElement("td");
+    let benCoApprovalCol = document.createElement("td");
+    let statusCol = document.createElement("td");
     let approveButtonCol = document.createElement("td");
     let rejectButtonCol = document.createElement("td");
     let requestButtonCol = document.createElement("td");
-    
-    // let approveBtn = document.createElement('input');
-    // approveBtn.type = "button";
-    // approveBtn.id = "approve";
-    // approveBtn.innerHTML = "Approve";
 
-
+    tableRow.appendChild(formCol);
     tableRow.appendChild(employeeCol);
     tableRow.appendChild(typeCol);
+    tableRow.appendChild(dateCol);
+    tableRow.appendChild(locationCol);
     tableRow.appendChild(descriptionCol);
     tableRow.appendChild(reimbursmentCol);
     tableRow.appendChild(justificationCol);
-    tableRow.appendChild(gradingCol);   
+    tableRow.appendChild(gradingCol);
+    tableRow.appendChild(gradeCol);
+    tableRow.appendChild(eventAttach);
     tableRow.appendChild(hoursMissedCol);
     tableRow.appendChild(approveButtonCol);
     tableRow.appendChild(rejectButtonCol);
     tableRow.appendChild(requestButtonCol);
-    table.appendChild(tableRow);
+    tableBody.appendChild(tableRow);
 
+    formCol.innerHTML = myForm.formId;
     employeeCol.innerHTML = myForm.employeeId;
     typeCol.innerHTML = myForm.eventType;
+    dateCol.innerHTML = myForm.eventDate;
+    locationCol.innerHTML = myForm.eventLocation;
     descriptionCol.innerHTML = myForm.eventDescription;
     reimbursmentCol.innerHTML = myForm.reimbursmentAmount;
     justificationCol.innerHTML = myForm.justification;
     gradingCol.innerHTML = myForm.gradingFormat;
-    hoursMissedCol.innerHTML = myForm.hoursMissed;
-    approveButtonCol.innerHTML = '<button class="approve">Approve</button>';
-    rejectButtonCol.innerHTML = '<button class="reject">Reject</button>';
-    requestButtonCol.innerHTML = '<button class="request">Request More Info</button>';
- 
-    employeeCol.className = "table_style_col";
-    typeCol.className = "table_style_col";
-    descriptionCol.className = "table_style_col";
-    reimbursmentCol.className = "table_style_col";
-    justificationCol.className = "table_style_col";
-    gradingCol.className = "table_style_col";
-    hoursMissedCol.className = "table_style_col";
+    gradeCol.innerHTML = myForm.grade;
 
-    approveButtonCol.setAttribute("id", myForm.employeeId);
+    eventAttachImg.src = "data:image/png;base64," + myForm.eventAttach;
+    eventAttachImg.alt = "No attachment Found";
+    eventAttachImg.style = "width:200px";
+    eventAttach.appendChild(eventAttachImg);
+
+    hoursMissedCol.innerHTML = myForm.hoursMissed;
+    approveButtonCol.innerHTML = '<button type="button" class="btn btn-success">Approve</button>';
+    rejectButtonCol.innerHTML = '<button type="button" class="btn btn-danger">Reject</button>';
+    requestButtonCol.innerHTML = '<button type="button" class="btn btn-info">Request More Info</button>'; 
+ 
+    // approveButtonCol.setAttribute("id", myForm.employeeId);
     approveButtonCol.onclick = function() {
-        //doc.cookie make ajax call or something
+        let approveRequest = new XMLHttpRequest();
+        const url = "http://localhost:9090/form/approve/" + myForm.formId;
+        //opens up the request
+        approveRequest.open("POST", url, true);
+        //sends request
+        approveRequest.send();
+        setTimeout(() => { window.location.reload(); }, 3000);
+        
+    }
+    rejectButtonCol.onclick = function() {
+        localStorage.formToReject = myForm.formId;
+        console.log(localStorage.formToReject);
+        window.location.href = "http://localhost:9090/reject_form.html"
+    }
+    requestButtonCol.onclick = function() {
+
     }
 }

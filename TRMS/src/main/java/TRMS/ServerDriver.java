@@ -25,17 +25,23 @@ public class ServerDriver {
 		app.routes(() -> {
 			app.get("/", ctx -> ctx.redirect("/login.html"));
 			app.get(HELLO_PATH, ctx -> ctx.html("Hello World"));
+			
 			app.post(LOGIN_PATH, ctx -> authController.login(ctx));
 			app.get(LOGIN_PATH, ctx -> authController.checkUser(ctx));
+			
 			app.get(EMPLOYEE_PATH, ctx -> employeeController.getAllEmployees(ctx));
+			
 			app.post(FORM_PATH, ctx -> formController.createForm(ctx));
+			app.post(FORM_PATH + "/grade/:id", ctx -> formController.updateFormGrade(ctx));
+			
 			app.get(FORM_PATH + "/pending", ctx -> formController.readPendingForms(ctx));
 			app.get(FORM_PATH + "/assigned", ctx -> formController.readAssignedForms(ctx));
-			app.put(FORM_PATH, ctx -> formController.updateForm(ctx));
-			//endpoints for each user level
-			app.post(FORM_PATH + "/assigned/approve", ctx -> formController.approveForm(ctx));
-			app.post(FORM_PATH + "/assigned/reject", ctx -> formController.rejectForm(ctx));
 			
+			app.post(FORM_PATH + "/approve/:id", ctx -> formController.approveForm(ctx));
+			app.post(FORM_PATH + "/reject/:id", ctx -> formController.rejectForm(ctx));
+			
+			// this must be at the end to prevent other inbounds attempting to use this incorrectly
+			app.get(FORM_PATH + "/:id", ctx -> formController.getFormById(ctx));
 		});
 		
 	}

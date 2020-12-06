@@ -5,8 +5,8 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Your Pending Forms</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <link rel="shortcut icon" href="#" />
+    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
+    <!-- <link rel="shortcut icon" href="#" /> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -15,7 +15,7 @@
 </head>
 <body>
     <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">TRMS</a>
+        <a class="navbar-brand" href="main_menu.html">TRMS</a>
         <span class="navbar-text">
             <h3>Your Pending Forms</h3>
           </span>
@@ -45,9 +45,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td id="available-funds">1000</td>
-                    <td id="pending-funds">0</td>
-                    <td id="awarded-funds">0</td>
+                    <td>$<span id="available-funds">1000</span></td>
+                    <td>$<span id="pending-funds">0</span></td>
+                    <td>$<span id="awarded-funds">0</span></td>
                 </tr>
             </tbody>
         </table>
@@ -67,7 +67,7 @@
                     <th scope="col">Given Justification</th>
                     <th scope="col">Grading Format</th>
                     <th scope="col">Grade</th>
-                    <th scope="col"><img id="event-attach-img" src=""></th>
+                    <th scope="col">Event Attachment Preview</th>
                     <th scope="col">Hours Missed</th>
                     <th scope="col">Supervisor Approval</th>
                     <th scope="col">Department Approval</th>

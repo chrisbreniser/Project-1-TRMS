@@ -1,5 +1,6 @@
 
 window.onload = function () {
+    console.log("debugCookie: " + document.cookie);
     //AJAX - Asynchronous JavaScript and XML
     //Initialize xhr object
     let xhr = new XMLHttpRequest();
@@ -46,6 +47,8 @@ window.onload = function () {
 
 }
 
+
+
 let updateFunds = function (reimbursmentAmount, status) {
     let available = document.getElementById("available-funds");
     let pending = document.getElementById("pending-funds");
@@ -78,6 +81,8 @@ let addRow = function (myForm) {
     let justificationCol = document.createElement("td");
     let gradingCol = document.createElement("td");
     let gradeCol = document.createElement("td");
+    let eventAttach = document.createElement("td");
+    let eventAttachImg = document.createElement("img")
     let hoursMissedCol = document.createElement("td");
     let supervisalApprovalCol = document.createElement("td");
     let depHeadApprovalCol = document.createElement("td");
@@ -96,6 +101,7 @@ let addRow = function (myForm) {
     tableRow.appendChild(justificationCol);
     tableRow.appendChild(gradingCol);
     tableRow.appendChild(gradeCol);
+    tableRow.appendChild(eventAttach);
     tableRow.appendChild(hoursMissedCol);
     tableRow.appendChild(supervisalApprovalCol);
     tableRow.appendChild(depHeadApprovalCol);
@@ -115,27 +121,28 @@ let addRow = function (myForm) {
     justificationCol.innerHTML = myForm.justification;
     gradingCol.innerHTML = myForm.gradingFormat;
     gradeCol.innerHTML = myForm.grade;
+    
+    eventAttachImg.src = "data:image/png;base64," + myForm.eventAttach;
+    eventAttachImg.alt = "No attachment Found";
+    eventAttachImg.style = "width:200px";
+
+    eventAttach.appendChild(eventAttachImg);
     hoursMissedCol.innerHTML = myForm.hoursMissed;
     supervisalApprovalCol.innerHTML = myForm.supervisorApproved;
     depHeadApprovalCol.innerHTML = myForm.depHeadApproved;
     benCoApprovalCol.innerHTML = myForm.benCoApproved;
-    statusCol.innerHTML = myForm.status;
+    if(myForm.rejReason != null){
+        statusCol.innerHTML = myForm.status + "\nReason: " + myForm.rejReason;
+    } else{
+        statusCol.innerHTML = myForm.status;
+    }
+    
     // rejectionStatusCol.innerHTML = myForm.rejected;
     // rejectionReasonCol.innerHTML = myForm.rejReason;
 
-    // employeeCol.className = "table_style_col";
-    // typeCol.className = "table_style_col";
-    // dateCol.className = "table_style_col";
-    // locationCol.className = "table_style_col";
-    // descriptionCol.className = "table_style_col";
-    // reimbursmentCol.className = "table_style_col";
-    // justificationCol.className = "table_style_col";
-    // gradingCol.className = "table_style_col";
-    // gradeCol.className = "table_style_col";
-    // hoursMissedCol.className = "table_style_col";
-    // supervisalApprovalCol.className = "table_style_col";
-    // depHeadApprovalCol.className = "table_style_col";
-    // benCoApprovalCol.className = "table_style_col";
-    // rejectionStatusCol.className = "table_style_col";
-    // rejectionReasonCol.className = "table_style_col";
+    tableRow.onclick = function(){
+        localStorage.formToEdit = myForm.formId;
+        console.log(localStorage.formToEdit);
+        window.location.href = "http://localhost:9090/edit_form.html";
+    }
 }

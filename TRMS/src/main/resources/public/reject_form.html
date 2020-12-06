@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Your Pending Forms</title>
+    <title>Reject TR Form</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
     <!-- <link rel="shortcut icon" href="#" /> -->
@@ -11,14 +11,16 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src='check_pending_forms.js'></script>
+    <script src='reject_form.js'></script>
 </head>
 <body>
+
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="main_menu.html">TRMS</a>
         <span class="navbar-text">
-            <h3>Your Pending Forms</h3>
-          </span>
+            <h3>Reject Form</h3>
+        </span>
+          
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -30,28 +32,9 @@
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="login.html">Logout <span class="sr-only">(current)</span></a>
-              </li>
+            </li>
         </div>
     </nav>
-
-    <div class="container">
-        <table class="table table-hover table-bordered">
-            <thead>
-                <tr>
-                    <th>Available Funds</th>
-                    <th>Pending Funds</th>
-                    <th>Awarded Funds</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>$<span id="available-funds">1000</span></td>
-                    <td>$<span id="pending-funds">0</span></td>
-                    <td>$<span id="awarded-funds">0</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
     <div class="container-fluid">
         <table class="table table-hover table-bordered">
@@ -79,5 +62,26 @@
             </tbody>
         </table>
     </div>
+
+    <div class="container">
+        <form id="reimbursementForm" method="POST" action="" enctype="multipart/form-data"> 
+
+            <div class="container-fluid">
+                <p>Current form id: #<span id="form-id"></span></p>
+            </div>
+
+            <div class="form-group">
+                <label for="rejection"><strong>Rejection Reason:</strong></label>
+                <textarea id="rejection-input" class="form-control" type="text" name="rejection" placeholder="By grading method"></textarea>
+            </div>
+
+            <div class="form-group">
+            <button type="submit" class="btn btn-danger">Reject</button>            
+        </form>
+    </div>
+       
 </body>
+<footer>
+    
+</footer>
 </html>

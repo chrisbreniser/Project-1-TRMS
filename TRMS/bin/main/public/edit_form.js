@@ -1,39 +1,35 @@
 
 window.onload = function () {
     console.log("debugCookie: " + document.cookie);
+
+    // insert form id into url in form on dom
+    let reimbursmentForm = document.getElementById("reimbursementForm");
+    reimbursmentForm.action = "/form/grade/" + localStorage.formToEdit;
+
     //AJAX - Asynchronous JavaScript and XML
     //Initialize xhr object
     let xhr = new XMLHttpRequest();
-    const url = "http://localhost:9090/form/assigned";
+    const url = "http://localhost:9090/form/" + localStorage.formToEdit;
     //sets up ready state handler
     xhr.onreadystatechange = function () {
         console.log(xhr.readyState);
         switch (xhr.readyState) {
-            case 1:
-                console.log("connection established");
-                break;
-            case 2:
-                console.log("request sent");
-                break;
-            case 3:
-                console.log("waiting response");
-                break;
             case 4:
                 console.log("FINISHED!!!!!!!!!!!");
                 //logic to add form to table
                 console.log(xhr.status);
-                console.log(xhr.responseText);
                 if (xhr.status === 200) {
                     console.log("xhr.responceText: " + xhr.responseText);
-                    let formList = JSON.parse(xhr.responseText);
-                    console.log(formList);
-                    console.log(formList[0]);
-                    formList.forEach(element => {
-                        addRow(element);
-                    });
+                    let thisForm = JSON.parse(xhr.responseText);
+                    console.log(thisForm);
+
+                    // display form number to user on dom
+                    let displayFormId = document.getElementById("form-id");
+                    displayFormId.innerHTML = thisForm.formId;
+
+                    addRow(thisForm);
                 }
                 break;
-
         }
     }
 
@@ -45,7 +41,7 @@ window.onload = function () {
 }
 
 let addRow = function (myForm) {
-    let tableBody = document.getElementById("assigned-table-body");
+    let tableBody = document.getElementById("pending-table-body");
     let tableRow = document.createElement("tr");
     let formCol = document.createElement("td");
     let employeeCol = document.createElement("td");
@@ -64,9 +60,8 @@ let addRow = function (myForm) {
     let depHeadApprovalCol = document.createElement("td");
     let benCoApprovalCol = document.createElement("td");
     let statusCol = document.createElement("td");
-    let approveButtonCol = document.createElement("td");
-    let rejectButtonCol = document.createElement("td");
-    let requestButtonCol = document.createElement("td");
+    // let rejectionStatusCol = document.createElement("td");
+    // let rejectionReasonCol = document.createElement("td");
 
     tableRow.appendChild(formCol);
     tableRow.appendChild(employeeCol);
@@ -80,9 +75,12 @@ let addRow = function (myForm) {
     tableRow.appendChild(gradeCol);
     tableRow.appendChild(eventAttach);
     tableRow.appendChild(hoursMissedCol);
-    tableRow.appendChild(approveButtonCol);
-    tableRow.appendChild(rejectButtonCol);
-    tableRow.appendChild(requestButtonCol);
+    tableRow.appendChild(supervisalApprovalCol);
+    tableRow.appendChild(depHeadApprovalCol);
+    tableRow.appendChild(benCoApprovalCol);
+    tableRow.appendChild(statusCol);
+    // tableRow.appendChild(rejectionStatusCol);
+    // tableRow.appendChild(rejectionReasonCol);
     tableBody.appendChild(tableRow);
 
     formCol.innerHTML = myForm.formId;
@@ -102,27 +100,14 @@ let addRow = function (myForm) {
     eventAttach.appendChild(eventAttachImg);
 
     hoursMissedCol.innerHTML = myForm.hoursMissed;
-    approveButtonCol.innerHTML = '<button type="button" class="btn btn-success">Approve</button>';
-    rejectButtonCol.innerHTML = '<button type="button" class="btn btn-danger">Reject</button>';
-    requestButtonCol.innerHTML = '<button type="button" class="btn btn-info">Request More Info</button>'; 
- 
-    // approveButtonCol.setAttribute("id", myForm.employeeId);
-    approveButtonCol.onclick = function() {
-        let approveRequest = new XMLHttpRequest();
-        const url = "http://localhost:9090/form/approve/" + myForm.formId;
-        //opens up the request
-        approveRequest.open("POST", url, true);
-        //sends request
-        approveRequest.send();
-        setTimeout(() => { window.location.reload(); }, 3000);
-        
+    supervisalApprovalCol.innerHTML = myForm.supervisorApproved;
+    depHeadApprovalCol.innerHTML = myForm.depHeadApproved;
+    benCoApprovalCol.innerHTML = myForm.benCoApproved;
+    if(myForm.rejReason != null){
+        statusCol.innerHTML = myForm.status + "\nReason: " + myForm.rejReason;
+    } else{
+        statusCol.innerHTML = myForm.status;
     }
-    rejectButtonCol.onclick = function() {
-        localStorage.formToReject = myForm.formId;
-        console.log(localStorage.formToReject);
-        window.location.href = "http://localhost:9090/reject_form.html"
-    }
-    requestButtonCol.onclick = function() {
-
-    }
+    // rejectionStatusCol.innerHTML = myForm.rejected;
+    // rejectionReasonCol.innerHTML = myForm.rejReason;
 }

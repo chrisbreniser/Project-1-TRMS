@@ -30,13 +30,10 @@ public class AuthController {
 			ctx.cookieStore("employee_id", currentUser.getEmployee_id());
 			ctx.cookieStore("dep_id", currentUser.getDep());
 			ctx.cookieStore("reports_to", currentUser.getReports_to());
-			ctx.cookieStore("is_supervisor", currentUser.getIs_supervisor());
-			ctx.cookieStore("is_dep_head", currentUser.getIs_dep_head());
-			ctx.cookieStore("is_ben_co", currentUser.getIs_ben_co());
+//			ctx.cookieStore("is_supervisor", currentUser.getIs_supervisor());
+//			ctx.cookieStore("is_dep_head", currentUser.getIs_dep_head());
+//			ctx.cookieStore("is_ben_co", currentUser.getIs_ben_co());
 			ctx.cookieStore("security", auth.createToken(username));
-			
-			System.out.println("ctx.cookieStore(\"is_supervisor\"): " + (boolean)ctx.cookieStore("is_supervisor"));
-
 			
 			ctx.status(200);
 			ctx.redirect("main_menu.html");
@@ -46,12 +43,14 @@ public class AuthController {
 		}
 	}
 	
-	public void checkUser(Context ctx) {
-		try {
-			ctx.html(auth.validateToken(ctx.cookieStore("security")));
-		} catch (Exception e) {
-			ctx.status(404);
-			ctx.html("Invalid Session Cookie. Please Log in first");
+	public boolean checkUser(Context ctx) {
+	
+		if(auth.validateToken(ctx.cookieStore("security")) != null) {
+			log.info("AuthController.checkUser[good token for user: " + ctx.cookie("username") + "]");
+			return true;
+		} else {
+			log.info("AuthController.checkUser[bad token]");
+			return false;
 		}
 	}
 }

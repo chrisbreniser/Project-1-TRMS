@@ -160,9 +160,9 @@ public class FormDaoPostgres implements FormDao {
 		
 		String sql = "update reimbursement_form set "
 				+ "employee_id=?, event_type=?::event_type_enum, event_date=?::date, event_time=?::time, event_location=?, event_description=?, "
-				+ "event_attach=?, event_cost=? justification=?, grading_format=?, grade=?, pre_approval_attach=?, "
-				+ "hours_time_missed=?, reimbursment_amount=?, status=?, supervisor_approval=?, "
-				+ "dep_head_approval=?, ben_co_approval=?, rejected=?, rej_reason=?) "
+				+ "event_attach=?, event_cost=?, justification=?, grading_format=?, grade=?, pre_approval_attach=?, "
+				+ "hours_missed=?, reimbursment_amount=?, status=?, supervisor_approval=?, "
+				+ "dep_head_approval=?, ben_co_approval=?, rejected=?, rej_reason=? "
 				+ "where form_id = ?;";
 		
 		
@@ -170,7 +170,7 @@ public class FormDaoPostgres implements FormDao {
 			conn.setAutoCommit(false);
 			preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
-			log.info("FormDaoPostgres.insertFrom[Preparing insert statement with received form]");
+			log.info("FormDaoPostgres.updateForm[Preparing insert statement with received form]");
 			
 			preparedStatement.setInt(1, form.getEmployeeId());
 			preparedStatement.setString(2, form.getEventType());
@@ -182,20 +182,36 @@ public class FormDaoPostgres implements FormDao {
 			preparedStatement.setObject(8, form.getEventCost());
 			preparedStatement.setString(9, form.getJustification());
 			preparedStatement.setString(10, form.getGradingFormat());
-			preparedStatement.setBytes(11, form.getPreApprovalAttach());
-			preparedStatement.setDouble(12, form.getHoursMissed());
-			preparedStatement.setDouble(13, form.getReimbursmentAmount());
-			preparedStatement.setString(14, form.getStatus());
+			preparedStatement.setString(11, form.getGrade());
+			preparedStatement.setBytes(12, form.getPreApprovalAttach());
+			preparedStatement.setDouble(13, form.getHoursMissed());
+			preparedStatement.setDouble(14, form.getReimbursmentAmount());
+			preparedStatement.setString(15, form.getStatus());
+			preparedStatement.setBoolean(16, form.isSupervisorApproved());
+			preparedStatement.setBoolean(17, form.isDepHeadApproved());
+			preparedStatement.setBoolean(18, form.isBenCoApproved());
+			preparedStatement.setBoolean(19, form.isRejected());
+			preparedStatement.setString(20, form.getRejReason());
+			preparedStatement.setInt(21, formId);
+
+			log.info("FormDaoPostgres.updateForm[In try block: Attempting to execute:\n" + preparedStatement + "]"); 
 			
+			int rowsAffected = preparedStatement.executeUpdate();
+			
+			log.info("FormDaoPostgres.updateForm[In try block: Effected: " + rowsAffected + " rows(s)]"); 
+			
+			
+			if(rowsAffected > 0) {
+				updated = true;
+				conn.commit();
+			}
+			conn.setAutoCommit(true);
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.info("FormDaoPostgres.updateForm[In catch block: errors thrown: " + e.getMessage() + "]"); 
 		}
 		
-		return true;
+		return updated;
 	}
-	
-	
 
 }

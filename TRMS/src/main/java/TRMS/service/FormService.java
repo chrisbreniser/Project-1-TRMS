@@ -11,7 +11,7 @@ public interface FormService {
 	
 	FormDao formDao = new FormDaoPostgres();
 	
-	public void createFrom(Form form);
+	public String createFrom(Form form);
 
 	public List<Form> readForms();
 	
@@ -27,5 +27,8 @@ public interface FormService {
 	
 	public boolean approveFormBenCo(int formId);
 
+	public boolean rejectForm(int formId, String rejectionReason);
+
+	Form readFormById(int formId);
 	
 }

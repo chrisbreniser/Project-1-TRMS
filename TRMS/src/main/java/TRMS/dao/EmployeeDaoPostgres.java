@@ -55,7 +55,9 @@ public class EmployeeDaoPostgres implements EmployeeDao {
 						rs.getInt("reports_to"),
 						rs.getBoolean("is_ben_co"),
 						rs.getBoolean("is_dep_head"),
-						rs.getBoolean("is_supervisor")
+						rs.getBoolean("is_supervisor"),
+						rs.getDouble("pending_funds"),
+						rs.getDouble("approved_funds")
 						));
 			}
 			
@@ -79,23 +81,43 @@ public class EmployeeDaoPostgres implements EmployeeDao {
 
 	@Override
 	public boolean updateEmployee(Employee employee, int id) {
-		log.info("EmployeeDao.selectAllEmployees[Received request, creating 'select *' statement]");
-		
-		List<Employee> employees = new ArrayList<Employee>();
+		log.info("EmployeeDao.updateEmployee[Received request, creating 'select *' statement]");
 		
 		boolean updated = false;
 		
-		String sql = "update employees from set where id = ?";
+		String sql = "update employee set first_name=?, last_name=?, email=?, dep_id=?, reports_to=?, pending_funds=?, approved_funds=? where employee_id = ?";
 		
-		try(Connection conn = connUtil.createConnection()){
+		try (Connection conn = connUtil.createConnection()) {
 			
+			conn.setAutoCommit(false);
 			
-			log.info("EmployeeDaoPostgres.updateEmployeefunds[Result of query as a list of employees: " 
-					+ employees.toString() + "]");
-			updated = true;
+			preparedStatement = conn.prepareStatement(sql);
+			
+			preparedStatement.setString(1, employee.getFirst_name());
+			preparedStatement.setString(2, employee.getLast_name());
+			preparedStatement.setString(3, employee.getEmail());
+			preparedStatement.setInt(4, employee.getDep());
+			preparedStatement.setInt(5, employee.getReports_to());
+			preparedStatement.setDouble(6, employee.getPending_funds());
+			preparedStatement.setDouble(7, employee.getApproved_funds());
+			preparedStatement.setInt(8, id);
+			
+			int rowsAffected = preparedStatement.executeUpdate();
+			
+			log.info("EmployeeDaoPostgres.updateEmployee[Result of query as a list of employees: " 
+					+ employee.toString() + "]");
+			
+			if(rowsAffected == 1) {
+				updated = true;	
+				conn.commit();
+			} else {
+				log.info("EmployeeDaoPostgres.updateEmployee[Incorrect update! Rows Affected: " + rowsAffected + ". Reverting changes]");
+			}
+			
+			conn.setAutoCommit(true);
 			
 		} catch (Exception e1) {
-			log.info("EmployeeDaoPostgres.selectEmployeeFunds[In catch block, SQLException: " 
+			log.info("EmployeeDaoPostgres.updateEmployee[In catch block, SQLException: " 
 					+ e1.getMessage() 
 					+ "]");
 		}

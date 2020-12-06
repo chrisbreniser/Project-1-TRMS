@@ -54,7 +54,10 @@ public class AuthServiceHardCoded implements AuthService {
 
 	@Override
 	public String validateToken(String token) {
-		return tokenRepo.get(token);
+		// return a token if there is one
+		String repoToken = tokenRepo.get(token);
+		log.info("AuthServiceHardCoded.validateToken[The token I found: " + repoToken + "]");
+		return repoToken;
 	}
 	
 	private String simpleHash(String username) {
