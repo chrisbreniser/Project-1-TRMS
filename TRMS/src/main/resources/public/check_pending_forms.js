@@ -47,8 +47,6 @@ window.onload = function () {
 
 }
 
-
-
 let updateFunds = function (reimbursmentAmount, status) {
     let available = document.getElementById("available-funds");
     let pending = document.getElementById("pending-funds");
