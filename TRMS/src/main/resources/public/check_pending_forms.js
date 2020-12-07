@@ -56,7 +56,7 @@ let updateFunds = function (reimbursmentAmount, status) {
 
     let placeHolder;
 
-    if(status === "pending"){
+    if(status === "pending" || status === "pending-final"){
         placeHolder = parseInt(pending.innerHTML);
         pending.innerHTML = placeHolder + reimbursmentAmount;
         available.innerHTML -= reimbursmentAmount;
@@ -125,8 +125,8 @@ let addRow = function (myForm) {
     eventAttachImg.src = "data:image/png;base64," + myForm.eventAttach;
     eventAttachImg.alt = "No attachment Found";
     eventAttachImg.style = "width:200px";
-
     eventAttach.appendChild(eventAttachImg);
+
     hoursMissedCol.innerHTML = myForm.hoursMissed;
     supervisalApprovalCol.innerHTML = myForm.supervisorApproved;
     depHeadApprovalCol.innerHTML = myForm.depHeadApproved;

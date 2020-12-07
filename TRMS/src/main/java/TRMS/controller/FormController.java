@@ -77,7 +77,7 @@ public class FormController {
 //		 pull out an uploaded file if exists, otherwise, set to null
 		try {
 			if(ctx.uploadedFile("pre_app_attach") != null) {
-				pre_app_attach = IOUtils.toByteArray(ctx.uploadedFile("pre_app_attach").getContent());;
+				pre_app_attach = IOUtils.toByteArray(ctx.uploadedFile("pre_app_attach").getContent());
 			}
 		} catch (Exception e) {
 			log.info("FormController.createFrom[pre_app_attach was null]");
@@ -321,7 +321,7 @@ public class FormController {
 		log.info("FormController.updateFormGrade[updating formId " + formId + " with grade " + formGrade + "]");
 		Form form = formService.readFormById(formId);
 		
-		if(form.getStatus() == "pending") {
+		if(form.getStatus().equals("pending-final")) {
 			form.setGrade(formGrade);
 		} 
 		

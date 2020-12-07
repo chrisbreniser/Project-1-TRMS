@@ -162,13 +162,13 @@ public class FormServiceFullStack implements FormService {
 			//check list for forms that have all approval but ben_co
 			System.out.println("User was a Ben_Co");
 			for(Form f : forms) {
-//				System.out.println("Checking: " + f.toString());
+				System.out.println("Checking: " + f.toString());
 				if(f.isSupervisorApproved() == true 
 						&& f.isDepHeadApproved() == true 
-						&& f.isBenCoApproved() == false 
+//						&& f.isBenCoApproved() == false 
 						&& f.getEmployeeId() != currentUser.getEmployee_id()
-						&& f.getStatus().equals("pending")) {
-//					System.out.println("Added!");
+						&& (f.getStatus().equals("pending") || (f.getStatus().equals("pending-final") && f.getGrade() != null))) {
+					System.out.println("Added!");
 					vettedForms.add(f);
 				}
 			}
@@ -259,17 +259,25 @@ public class FormServiceFullStack implements FormService {
 		// search through list until we find our formId and then set to approved, call formDao and return
 		for(Form f : forms) {
 			if(f.getFormId() == formId) {
-				Employee employee = employeeService.readEmployeeById(f.getEmployeeId());
-				double formAmount = f.getReimbursmentAmount();
-				double userPending = employee.getPending_funds();
-				double userApproved = employee.getApproved_funds();
-				employee.setApproved_funds(userApproved + formAmount); 
-				employee.setPending_funds(userPending - formAmount);
-				employeeDao.updateEmployee(employee, employee.getEmployee_id());
-				f.setBenCoApproved(true);
-				f.setStatus("approved");
-				formDao.updateForm(formId, f);
-				return true;
+				
+				if(f.getGrade() == null) {
+					f.setBenCoApproved(true);
+					f.setStatus("pending-final");
+					formDao.updateForm(formId, f);
+					return true;
+				} else {
+					Employee employee = employeeService.readEmployeeById(f.getEmployeeId());
+					double formAmount = f.getReimbursmentAmount();
+					double userPending = employee.getPending_funds();
+					double userApproved = employee.getApproved_funds();
+					employee.setApproved_funds(userApproved + formAmount); 
+					employee.setPending_funds(userPending - formAmount);
+					employeeDao.updateEmployee(employee, employee.getEmployee_id());
+					f.setStatus("approved");
+					formDao.updateForm(formId, f);
+					return true;
+				}
+				
 			}
 		}
 		return false;
