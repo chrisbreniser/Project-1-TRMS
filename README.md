@@ -6,41 +6,40 @@ Here goes your awesome project description!
 
 ## Technologies Used
 
-* Tech 1 - version 1.0
-* Tech 2 - version 2.0
-* Tech 3 - version 3.0
+* Java
+* HTML
+* CSS
+* JDBC
+* SQL
+* JavaScript
+* AJAX
+* Azure
+* Javalin
 
 ## Features
 
 List of features ready and TODOs for future development
-* Awesome feature 1
-* Awesome feature 2
-* Awesome feature 3
+* Allows users to submit reimbursements for courses and training.
+* The submitted reimbursement must be approved by that employee's supervisor, The department Head, and a Benefits Coordinator in that order.
+* The user can then add a grade to the reimbursement for final approval.
 
 To-do list:
-* Wow improvement to be done 1
-* Wow improvement to be done 2
+* Implement JWTs for better session tracking and authurization.
+* Finish testing Dao classes
 
 ## Getting Started
    
-(include git clone command)
-(include all environment setup steps)
+git clone https://github.com/chrisbreniser/Project-1-TRMS.git
 
-> Be sure to include BOTH Windows and Unix command  
-> Be sure to mention if the commands only work on a specific platform (eg. AWS, GCP)
+> Setup your code 
 
-- All the `code` required to get started
-- Images of what it should look like
+- Within the connectionUtil.java, set your URL, Username, and Password in order to connect to your database
+- Run the included SQL file in your database to setup tables and dummy data(replace dummy data as needed)
+- If running within the Spring Tool Suit 4, within ServerDriver.java, specify your prefered port.
+- Run the serverDriver.java and navigate to http://localhost:'port'/hello to test connectivity
 
 ## Usage
 
-> Here, you instruct other people on how to use your project after they’ve installed it. This would also be a good place to include screenshots of your project in action.
+> Navigate to http://localhost:'port'/ to be redirected to the login page. Use the provided dummy data to explore all features.
 
-## Contributors
-
-> Here list the people who have contributed to this project. (ignore this section, if its a solo project)
-
-## License
-
-This project uses the following license: [<license_name>](<link>).
 
