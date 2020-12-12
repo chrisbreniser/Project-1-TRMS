@@ -29,7 +29,7 @@ To-do list:
 
 ## Getting Started
    
-git clone https://github.com/chrisbreniser/Project-1-TRMS.git
+- git clone https://github.com/chrisbreniser/Project-1-TRMS.git
 
 > Setup your code 
 
@@ -40,6 +40,6 @@ git clone https://github.com/chrisbreniser/Project-1-TRMS.git
 
 ## Usage
 
-> Navigate to http://localhost:'port'/ to be redirected to the login page. Use the provided dummy data to explore all features.
+- Navigate to http://localhost:'port'/ to be redirected to the login page. Use the provided dummy data to explore all features.
 
 
