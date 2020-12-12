@@ -1,4 +1,4 @@
-# PROJECT NAME
+# The Tuition Reimbursement System (TRMS)
 
 ## Project Description
 
